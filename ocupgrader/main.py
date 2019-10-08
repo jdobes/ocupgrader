@@ -10,6 +10,8 @@ import sys
 from ocdeployer.utils import oc, load_cfg_file
 import yaml
 
+from .schema import validate_schema
+
 log = logging.getLogger("ocupgrader")
 logging.basicConfig(level=logging.INFO)
 
@@ -48,7 +50,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("project", action="store", help="target OpenShift project")
     parser.add_argument("-f", "--file", action="store", default=".ocupgrader.yml",
-                        help="project file with upgrade commands definitions (default: '%(default)s')")
+                        help="project file with upgrade tasks specification (default: '%(default)s')")
     subparsers = parser.add_subparsers(dest="subcommand")
     subparsers.add_parser("list-tasks", help="list available tasks")
     run_parser = subparsers.add_parser("run", help="run given task")
@@ -57,6 +59,9 @@ def main():
     
     set_oc_project(args)
     project_spec = get_project_spec(args)
+    if not validate_schema(project_spec):
+        log.error("Error validating project spec.")
+        sys.exit(4)
 
     if args.subcommand == "run":
         run_task(args, project_spec)
