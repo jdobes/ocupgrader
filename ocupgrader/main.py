@@ -42,9 +42,14 @@ def list_tasks(args, project_spec):
 
 def run_task(args, project_spec):
     task_name = args.task
-    log.info("Executing task: %s", task_name)
-    for command in project_spec["tasks"][task_name]["commands"]:
-        oc(command)
+    if task_name in project_spec["tasks"]:
+        log.info("Executing task: %s", task_name)
+        for command in project_spec["tasks"][task_name]["commands"]:
+            oc(command)
+    else:
+        log.error("Task doesn't exist in project spec: '%s'", task_name)
+        sys.exit(5)
+
 
 def main():
     parser = argparse.ArgumentParser()
