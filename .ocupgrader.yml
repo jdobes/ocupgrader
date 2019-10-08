@@ -1,0 +1,29 @@
+services:
+  - service1
+  - service2
+tasks:
+  maintenance-mode:
+    description: Switch application to maintenance mode
+    commands:
+      - status
+  operational-mode:
+    description: Switch application to operational mode
+    commands:
+      - status
+  status:
+    description: Return status of the application
+    commands:
+      - status
+      - project
+  upgrade-builds:
+    arguments:
+      - version
+    description: Re-build images into new imagestream tag
+    commands:
+      - status
+  upgrade-services:
+    arguments:
+      - version
+    description: Switch services to use new version images
+    commands:
+      - status
