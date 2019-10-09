@@ -46,6 +46,7 @@ def run_task(args, project_spec):
         log.info("Executing task: %s", task_name)
         for command in project_spec["tasks"][task_name]["commands"]:
             oc(command)
+        log.info("Task executed successfuly.")
     else:
         log.error("Task doesn't exist in project spec: '%s'", task_name)
         sys.exit(5)
