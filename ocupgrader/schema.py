@@ -4,37 +4,41 @@ import logging
 import yaml
 
 log = logging.getLogger(__name__)
+log.level = logging.INFO
 
 SCHEMA = yaml.safe_load("""
 type: object
 properties:
-  services:
-    type: array
-    items:
-      type: string
-      example: vulnerability-engine-manager
   tasks:
     type: object
     additionalProperties:
       type: object
       properties:
-        arguments:
+        commands:
+          type: array
+          items:
+            type: object
+            properties:
+              args:
+                type: array
+                items:
+                  type: string
+                  example: pods
+              description:
+                type: string
+            required:
+              - args
+        description:
+          type: string
+        parameters:
           type: array
           items:
             type: string
             example: version
-        commands:
-          type: array
-          items:
-            type: string
-            example: get pods
-        description:
-          type: string
       required:
         - commands
         - description
 required:
-  - services
   - tasks
 """)
 
